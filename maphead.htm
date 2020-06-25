@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta property="og:image" content="/icons/grimpeur.jpg" />
+<meta property="og:image:width" content="100"/>
+<meta property="og:image:height" content="100"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ek+Mukta">
+    <link rel="stylesheet" type="text/css" href="/vscc.css">
+  </head>
+  <body>
+
+<style>
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+    width: 100vw;
+}
+</style>
+
+
+<div class="menu-wrap">
+ <nav class="menu">
+  <ul class="clearfix">
+   <li><a href="/grimpeur/index.html">Back</a></li>
+   <li><a href="/grimpeur/allsegments.html">All Grimpeur Climbs info</a></li>
+   </ul>
+ </nav>
+</div>
+
+<div id="map" style="height:800px">
+</div>
+
+<script type="text/javascript">
+
+var map = new L.Map('map', {
+  center: new L.LatLng(53.846, -1.499),
+  zoom: 9
+});
+
+
+var grimpmapicon = L.icon({
+    iconUrl:'/icons/grimpeurmapicon.gif',
+    iconSize:[30, 50],
+    iconAnchor:[15, 50],
+    popupAnchor:[0, -60]
+});
+var thebaricon = L.icon({
+    iconUrl:'/icons/vsccmapicon.gif',
+    iconSize:[30, 50],
+    iconAnchor:[15, 50],
+    popupAnchor:[0, -60]
+});
+
+// create a new tile layer
+var tileUrl = 'https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=b42f0001de8e4ae99dbbf056ece5cb8e',
+layer = new L.TileLayer(tileUrl, {maxZoom: 18});
+
+// add the layer to the map
+map.addLayer(layer);
+
+map.locate({setView: true, maxZoom: 16});
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+    L.circle(e.latlng, radius).addTo(map);
+}
+map.on('locationfound', onLocationFound);
+function onLocationError(e) {
+    alert(e.message);
+}
+
+
+L.marker([53.845061, -1.499824],{icon:thebaricon}).addTo(map)
+    .bindPopup('VSCC HQ<br>The Bar, Park Lane, Leeds<br>LS8 2EJ')
+    .openPopup();
+
+L.circle([53.845061, -1.499824],{color:'blue',radius:'64000',fillOpacity:0}).addTo(map) 
