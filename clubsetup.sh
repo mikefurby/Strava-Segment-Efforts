@@ -10,6 +10,7 @@ mkdir ~/$club/efforts
 mkdir ~/$club/efforts/riders
 mkdir ~/$club/html
 mkdir ~/$club/input
+mkdir ~/$club/input/gpx
 mkdir ~/$club/maps
 mkdir ~/$club/output
 mkdir ~/Strava/$club/efforts
