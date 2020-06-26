@@ -1,0 +1,35 @@
+# Edit this file to introduce tasks to be run by cron.
+# m h  dom mon dow   command
+#####once a day jobs
+00 00 * * * ./apps/awsappbackup.sh
+01 00 * * * ./apps/segmentparams.py vscc
+02 00 * * * ./apps/segmentparams.py ycf
+03 00 * * * ./apps/segmentparams.py vs3l
+04 00 * * * ./apps/segmentparams.py vsvl
+05 00 * * * ./apps/segmentparams.py vscctt
+06 00 * * * ./apps/segmentparams.py grimpeur
+07 00 * * * ./apps/segmentparams.py vstc
+00 07 * * * python ./killget.py
+00 06 * * * sudo service apache2 restart 
+#######covers YCF and all VSCC incl vs3l, grimpeur etc.
+15 01 * * 7 python3 ./Strava/athlete_info_refresh.py ycf
+15 02 * * 7 python3 ./Strava/athlete_info_refresh.py vscc
+00,30 * * * * python3 ./Strava/token_only_refresh.py ycf
+01,31 * * * * python3 ./Strava/token_only_refresh.py vscc
+*/5 * * * * ./apps/newbuildmemberlist.py
+* * * * * ./apps/concatsegments.sh 
+#######YCF
+#06 * * * * ./apps/segmentefforts.py ycf
+2,7,12,17,22,27,32,37,42,47,52,57 * * * * ./ycf/getycf.sh
+#######VSCC
+#16 00 * * * ./apps/segmentefforts.py vscc###covered by webhooks now..maybe do a weekly refresh?
+#######VS3L
+#16 00 * * * ./apps/segmentefforts.py vs3l
+#10 20 * * * ./vs3l/getvs3l.sh
+#######Grimpeur
+#16 00 * * * ./apps/segmentefforts.py grimpeur
+#10 20 * * * ./grimpeur/getgrimpeur.sh
+######unused/old
+#10 12 * * * ./vsvl/getvsvl.sh
+#00 * * * * scp -i ~/.ssh/my_key mfurby@34.243.14.2:/home/mfurby/strava_tokens.csv ~/users/.
+#00 * * * * scp -i ~/.ssh/my_key mfurby@34.243.14.2:/home/mfurby/strava_tokens.csv ~/Strava/grimpeur/tokenfiles/.
